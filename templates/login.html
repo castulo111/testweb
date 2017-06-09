@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-hant">
+    <meta charset = "UTF-8"/>
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<title>{$title}</title>
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+    <style type = "text/css">
+	body{
+		margin:0;
+		padding:0;
+        font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;
+	}
+    .title1{
+        margin: 40px auto;
+        text-align: center;
+        font-size: 50px;
+        color : sienna;
+        font-weight:bold;
+    }
+    .border1{
+        margin:30px auto;
+        padding:30px;
+        text-align: center;
+        background-color: azure;
+        border:1px lightsteelblue solid;
+    }
+	.font1{
+		font-size:40px;
+		line-height:20px;
+	}
+    .input1{
+        font-size:25px;
+        vertical-align:middle;
+    }
+    .btn1{
+        margin-left:50px;
+        margin-bottom:5px;
+        font-size:25px;
+        border: 3px olivedrab solid;
+    }
+    .border2{
+        text-align:center;
+        margin: auto;
+    }
+    </style>
+    <script type = "text/javascript" src = "js/jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src = "js/bootstrap.js"></script>
+    <script type = "text/javascript">
+        $(document).ready(function(){
+
+
+        });
+
+
+        function check_login(){
+            $(document).ready(function(){
+                $.ajax({
+                    url : "check_login.php",
+                    type : "POST",
+                    data : {
+                        account :  $("#account").val(),
+                        password : $("#password").val()
+                    },
+                    success:function(){
+                        window.location.href = "check_login.php";
+                    }
+                });
+            });
+        }
+
+        $(window).on("load",function(e){
+            if($("#msg_error").html() == "帳號密碼有誤"){
+                alert("帳號密碼有誤");
+                $("#msg_error").text('');
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div class = "container-fluid">
+        <div class = "row">
+            <div class = "title1">後臺管理系統</div>
+        </div>
+
+        <div class = "row">
+            <div class = "container">
+                <div class = "row border1">
+                    {if isset($msg)}
+                        {if $msg eq '帳號密碼有誤'}
+                             <div style = "display:none;" id = "msg_error">{$msg}</div>
+                        {/if}
+                    {/if}
+                    <div class = "font1">帳號：<input id = "account" class = "input1" type = "text" name = "account"></div><br>
+                    <div class = "font1">密碼：<input id = "password" class = "input1" type = "password" name = "password"></div><br>
+                    <input id = "btn1" class = "btn btn-info btn1" type = "submit" name = "btn1" value = "登入" onclick = check_login();>
+                    <input id = "btn2" class = "btn btn-info btn1" type = "submit" name = " btn1" value = "回首頁" onclick = "javascript:location.href='index.php'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+	
+</body>
+</html>

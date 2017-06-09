@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-hant">
+    <meta charset = "UTF-8"/>
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<title>{$title}</title>
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+    <style type = "text/css">
+        body{
+            margin: 0;
+            padding: 0;
+            padding-top:30px;
+            font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;
+        }
+        .title1{
+            margin: 40px auto;
+            text-align: center;
+            font-size: 50px;
+            color : black;
+            border: 1px double solid;
+        }
+        .border1{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            background-color: azure;
+        }
+        .border2{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            background-color: azure;
+        }
+        .title2{
+            margin:0px auto;
+            padding:10px;
+            text-align:center;
+            font-size:40px;
+        }
+        .title3{
+            margin:0px auto;
+            padding:10px;
+            text-align:left;
+            font-size:24px;
+        }
+
+        .btn1{
+            font-size:25px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .btn2{
+            font-size:8px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .textarea1{
+            font-size:24px;
+            width : 50%;
+            height : 150px;
+            vertical-align:middle;
+        }
+
+
+        .nav-title{
+            font-size: 30px;
+            font-weight: bold;
+            color:sienna;
+        }
+        .nav-li{
+            font-size: 16px;
+        }
+        .current1{
+            display:none;
+        }
+        .input-border{
+            border:0;
+            background-color:azure;
+        }
+        .input-border2{
+            border:0;
+            background-color:azure;
+        }
+    </style>
+    <script type = "text/javascript" src = "js/jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src = "js/bootstrap.js"></script>
+    <script type = "text/javascript">
+	$(document).ready(function(){
+
+
+    });
+
+    function logout(){
+        $(document).ready(function() {
+            if(confirm("確定要登出嗎")){
+                $.ajax({
+                    url : "logout.php",
+                    success :function(){
+                        alert("登出成功");
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
+    </script>
+</head>
+
+<body>
+    <nav class = "navbar navbar-default navbar-fixed-top">
+        <div class = "container">
+            <div class = "navbar-header">
+                <div class = "navbar-brand"><p class = "nav-title">商品後台管理</p></div>
+            </div>
+            <ul class = "nav navbar-nav navbar-right">
+                <li class = "nav-li"><a href="backend.php">基本資料</a></li>
+                <li class = "nav-li"><a href="backend_productinfo.php">商品資訊</a></li>
+                <li class = "nav-li"><a href="javascript:void(0);" onclick =logout()>登出</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class = "container-fluid">
+        <div class = "row">
+            <div class = "container">
+                <div class = "row">
+                    <div class = "title1">商品資訊<button id = "btn_insert" class = "btn btn-info pull-right btn1" onclick="javascript:location.href='product_insert.php'">新增商品</button></div>
+                </div>
+                <div class = "row row2">
+                    <table class = "table" style ="background-color:azure ;">
+                        <tr>
+                            <th>商品名稱</th>
+                            <th>商品資訊</th>
+                            <th>修改商品內容</th>
+                        </tr>
+                        {if isset($product_array)}
+                        {foreach from = $product_array key = number item = i}
+                        <tr>
+                            <td><input id = "product_name{$i.product_id}" class = "input-border2" type = "text" name = "product_name{$i.product_id}" value = " {$i.product_name}" readonly="readonly"></td>
+                            <td><input id = "btn_check" class = "btn btn-success btn2" type = "submit" value = "查看" onclick="javascript:location.href='backend_productcheck.php?product_id={$i.product_id}'"></td>
+                            <td><input id = "btn_update{$i.product_id}" class = "btn btn-success btn2" type = "submit" value = "修改" onclick="javascript:location.href='product_update.php?product_id={$i.product_id}'"></td>
+                        </tr>
+                        {/foreach}
+                        {/if}
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

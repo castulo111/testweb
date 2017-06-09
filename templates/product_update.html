@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-hant">
+    <meta charset = "UTF-8"/>
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<title>{$title}</title>
+    <link href="css/dropzone.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+    <style type = "text/css">
+        body{
+            margin: 0;
+            padding: 0;
+            padding-top:30px;
+            font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;
+        }
+        .title1{
+            margin: 40px auto;
+            text-align: center;
+            font-size: 50px;
+            color : black;
+            border: 1px double solid;
+        }
+        .border1{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            height: 400px;
+            width: 70%;
+            background-color: azure;
+        }
+        .border2{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            background-color: azure;
+        }
+        .title2{
+            margin:0px auto;
+            padding:10px;
+            text-align:center;
+            font-size:40px;
+        }
+        .title3{
+            margin:0px auto;
+            padding:10px;
+            text-align:left;
+            font-size:40px;
+        }
+        .input1{
+            font-size:25px;
+            vertical-align:middle;
+        }
+        .btn1{
+            font-size:25px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .textarea1{
+            font-size:24px;
+            width : 50%;
+            height : 150px;
+            vertical-align:middle;
+        }
+        .dropzone{
+            clear:both;
+        }
+        .nav-title{
+            font-size: 30px;
+            font-weight: bold;
+            color:sienna;
+        }
+        .nav-li{
+            font-size: 16px;
+        }
+    </style>
+    <script type = "text/javascript" src = "js/jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src = "js/bootstrap.js"></script>
+    <script type = "text/javascript" src = "js/dropzone.js"></script>
+    <script type = "text/javascript">
+	$(document).ready(function(){
+
+
+
+    });
+
+    function btn_update(product_id){
+        $product_id = product_id;
+        $product_name = "#" + "product_name" + product_id;
+        $product_content = "#" + "product_content" + product_id;
+
+
+        $(document).ready(function(){
+            $.ajax({
+                url : "upload.php",
+                type : "POST",
+                data :{
+                    product_id : $product_id,
+                    product_name : $($product_name).val(),
+                    product_content : $($product_content).val()
+                },
+                success:function(response) {
+                    alert ("更新成功");
+                    location.reload();
+                }
+            });
+        });
+    }
+
+    function btn_delete(product_id){
+        $product_id2 = product_id;
+        $product_name = "#" + "product_name" + product_id;
+        $product_content = "#" + "product_content" + product_id;
+
+
+        $(document).ready(function(){
+            if(confirm("確定要刪除嗎")){
+                $.ajax({
+                    url : "upload.php",
+                    type : "POST",
+                    data :{
+                        product_id2 : $product_id2,
+                    },
+                    success:function(response) {
+                        alert ("刪除成功");
+                        window.location.href = "backend_productinfo.php";
+                    }
+                });
+            }
+
+        });
+    }
+
+    function logout(){
+        $(document).ready(function() {
+            if(confirm("確定要登出嗎")){
+                $.ajax({
+                    url : "logout.php",
+                    success :function(){
+                        alert("登出成功");
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
+    </script>
+</head>
+
+<body>
+    <nav class = "navbar navbar-default navbar-fixed-top">
+        <div class = "container">
+            <div class = "navbar-header">
+                <div class = "navbar-brand"><p class = "nav-title">商品後台管理</p></div>
+            </div>
+            <ul class = "nav navbar-nav navbar-right">
+                <li class = "nav-li"><a href="backend.php">基本資料</a></li>
+                <li class = "nav-li"><a href="backend_productinfo.php">商品資訊</a></li>
+                <li class = "nav-li"><a href="javascript:void(0);" onclick =logout()>登出</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class = "container">
+        <div class = "row">
+            <div class = "title1">商品資料修改</div>
+            {if isset($product_array)}
+            {foreach from = $product_array key = number item = i}
+                <div class = "container">
+                    <div class = "row border2">
+                        <div class = "col-xs-6">
+                            <div class = "title3 form-group">商品名稱：<input id = "product_name{$i.product_id}" class = "form-control" type = "text" name = "product_name{$i.product_id}" value = "{$i.product_name}" ></div>
+                            <div class = "title3 form-group">商品介紹：<textarea id = "product_content{$i.product_id}" class = "form-control" rows = "4" name = "product_content{$i.product_id}">{$i.product_content}</textarea></div>
+                            <div class = "title3">商品更新</div>
+                            <form action="upload.php" class="dropzone"></form>
+                        </div>
+                        <div class = "col-xs-6">
+                            <div class = "title2">商品圖片
+                                {if $product_array[$number]['product_img1'] neq ''}
+                                <div>
+                                    <div>
+                                        <img src = "{$i.product_img1}"><br/>
+                                    {if $product_array[$number]['product_img2'] neq ''}
+                                        <img src = "{$i.product_img2}" style = "margin:20px;"><br/>
+                                    {/if}
+                                    </div>
+                                </div>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class = "text-center">
+                <input id = "btn_update{$i.product_id}" class = "btn btn-info btn1" type = "submit" name = "0" value = "更新商品資訊" onclick = btn_update("{$i.product_id}")>
+                <input id = "btn_delete{$i.product_id}" class = "btn btn-info btn1" type = "submit" name = "1" value = "刪除此商品" onclick = btn_delete("{$i.product_id}")>
+            </div>
+            {/foreach}
+            {/if}
+        </div>
+    </div>
+
+</body>
+</html>

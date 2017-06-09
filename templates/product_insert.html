@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-hant">
+    <meta charset = "UTF-8"/>
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<title>{$title}</title>
+    <link href="css/dropzone.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+    <style type = "text/css">
+        body{
+            margin: 0;
+            padding: 0;
+            padding-top:30px;
+            font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;
+        }
+        .title1{
+            margin: 40px auto;
+            text-align: center;
+            font-size: 50px;
+            color : black;
+            border: 1px double solid;
+        }
+        .border1{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            background-color: azure;
+        }
+        .border2{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            height: 800px;
+            width: 70%;
+            background-color: azure;
+        }
+        .title2{
+            text-align:left;
+            font-size:30px;
+        }
+        .input1{
+            font-size:25px;
+            vertical-align:middle;
+            background-color: azure;
+        }
+        .btn1{
+            font-size:25px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .textarea1{
+            font-size:16px;
+            width : 50%;
+            height : 150px;
+            vertical-align:middle;
+            background-color: azure;
+        }
+        .img_postion1{
+            text-align: center;
+            float: left;
+        }
+        .dropzone{
+            clear:both;
+        }
+        .nav-title{
+            font-size: 30px;
+            font-weight: bold;
+            color:sienna;
+        }
+        .nav-li{
+            font-size: 16px;
+        }
+    </style>
+    <script type = "text/javascript" src = "js/jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src = "js/bootstrap.js"></script>
+    <script type = "text/javascript" src = "js/dropzone.js"></script>
+    <script type = "text/javascript">
+	$(document).ready(function(){
+
+
+    });
+
+
+    function btn_update(user_id){
+        $user_id = user_id;
+        $product_name = "#" + "product_name";
+        $product_content = "#" + "product_content";
+        $a= 0;
+
+        $(document).ready(function(){
+            if($($product_name).val() != ""){
+                $.ajax({
+                    url : "insert.php",
+                    type : "POST",
+                    data :{
+                        a : $a,
+                        user_id : $user_id,
+                        product_name : $($product_name).val(),
+                        product_content : $($product_content).val()
+                    },
+                    success:function(response) {
+                        alert ("新增成功");
+                        location.reload();
+                    }
+                });
+            }else{
+                alert("請輸入商品名稱");
+            }
+        });
+    }
+
+    function logout(){
+        $(document).ready(function() {
+            if(confirm("確定要登出嗎")){
+                $.ajax({
+                    url : "logout.php",
+                    success :function(){
+                        alert("登出成功");
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
+    </script>
+</head>
+
+<body>
+    <nav class = "navbar navbar-default navbar-fixed-top">
+        <div class = "container">
+            <div class = "navbar-header">
+                <div class = "navbar-brand"><p class = "nav-title">商品後台管理</p></div>
+            </div>
+            <ul class = "nav navbar-nav navbar-right">
+                <li class = "nav-li"><a href="backend.php">基本資料</a></li>
+                <li class = "nav-li"><a href="backend_productinfo.php">商品資訊</a></li>
+                <li class = "nav-li"><a href="javascript:void(0);" onclick =logout()>登出</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class = "container">
+        <div class = "row">
+            <div class = "title1">新增商品</div>
+            <div class = "border1">
+                <div class = "form-group">
+                    <div class = "title2">商品名稱：<input id = "product_name" class = "form-control" type = "text" name = "product_name"></div>
+                </div>
+                <div class = "form-group">
+                    <div class = "title2">商品介紹：<textarea id = "product_content" class = "form-control" rows = "4" name = "product_content"></textarea></div>
+                </div>
+                <div class = "title2">商品圖片</div>
+                <form action="upload.php" class="dropzone"></form>
+            </div>
+            <div class = "text-center">
+                <input id = "btn_insert" class = "btn btn-info btn1" type = "submit" name = "0" value = "確認新增" onclick = btn_update("{$user_id}")>
+                <input class = "btn btn-info btn1" type = "submit" name = "1" value = "回上一頁" onclick="javascript:location.href='backend_productinfo.php'">
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+</body>
+</html>

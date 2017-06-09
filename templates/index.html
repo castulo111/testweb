@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-hant">
+    <meta charset = "UTF-8"/>
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<title>{$title}</title>
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+    <style type = "text/css">
+	body{
+		margin:0;
+		padding:0;
+        font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;
+	}
+    .title1{
+        margin: 40px auto;
+        text-align: center;
+        font-size: 50px;
+        color : sienna;
+        font-weight:bold;
+    }
+    .title2{
+        text-align:center;
+        font-size:40px;
+        color : sienna;
+        font-weight:bold;
+        margin: 40px auto;
+    }
+    .title3{
+        margin:10px auto;
+        text-align:center;
+        font-size:40px;
+    }
+    .btn1{
+        margin-left:50px;
+        margin-bottom:5px;
+        font-size:25px;
+        border: 3px olivedrab solid;
+    }
+    .btn2{
+        font-size:18px;
+        border: 3px olivedrab solid;
+    }
+    .border1{
+        margin:30px auto;
+        padding:30px;
+        text-align: center;
+        background-color: azure;
+        border:1px lightsteelblue solid;
+    }
+    .list1{
+        background-color: moccasin;
+        margin-left: 20px;
+        font-size: 24px;
+    }
+    .list2{
+        background-color: floralwhite;
+        margin-left: 40px;
+        font-size: 24px;
+        display: none;
+    }
+    .product-title{
+        font-size : 30px;
+    }
+
+    </style>
+    <script type = "text/javascript" src = "js/jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src = "js/bootstrap.js"></script>
+    <script type = "text/javascript">
+        $(document).ready(function(){
+            $("#user_name"+"{$user[0]['user_id']}").next("div").css("display","block");
+            $("#row"+"{$user[0]['user_id']}").css("display","block");
+
+        });
+
+        function show_list(id){
+            $(document).ready(function(){
+                if($("#user_name"+id).next("div").css("display") == "none"){
+                    $(".row1").css("display","none");
+                    $(".list2").css("display","none");
+                    $("#row"+id).css("display","block");
+                    $("#user_name"+id).next("div").css("display","block");
+
+                }else{
+                    $("#user_name"+id).next("div").css("display","none");
+                    $("#row"+id).css("display","none");
+                }
+            });
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div class = "container-fluid">
+
+
+        <div class = "row">
+            <div class = "col-xs-2 list-group">
+                <div class = "title2">商家列表</div>
+                {foreach from = $user  key = id item = i}
+                <a href = "javascript: void(0)"  id = "user_name{$i.user_id}" class = "list-group-item list1" onclick = show_list("{$i.user_id}")>{$i.user}</a>
+                <div class = "list2">
+                {foreach from = $product_array key = number item = j}
+                {if $i.user_id == $j.user_id}
+                   <a href = "javascript: void(0)" id = "product_name{$j.product_id}"  class = "list-group-item " onclick="javascript:location.href='index_message.php?product_id={$j.product_id}'">{$j.product_name}</a>
+                {/if}
+                {/foreach}
+                </div>
+                {/foreach}
+            </div>
+            <div class = "col-xs-10">
+                <div class = "row">
+                    <div class = "title1">店家商品內容
+                        <input id = "btn1" class = "btn  btn-info btn1" type = "submit" name = "btn1" value = "商品管理" onclick="javascript:location.href='login.php'">
+                    </div>
+                </div>
+
+                {foreach from = $user  key = id item = i}
+                <div class = "row row1" id = "row{$i.user_id}" style = "display:none;">
+                    <div class = "container">
+                        <div class = "title2">{$i.user} 商品</div>
+                        <div class ="row">
+                        {foreach from = $product_array key = number item = j}
+                        {if $i.user_id == $j.user_id}
+                            <div class = "col-xs-6" style = "border: 1px olivedrab solid;padding:10px;">
+                                <hgroup class = "product-title">
+                                    <div>商品名稱：{$j.product_name}</div>
+                                    <div>商品介紹：{$j.product_content}</div>
+                                    <p></p>
+                                    <div class = "text-center">商品圖片</div>
+                                    <div class = "text-center"><img src = "{$j.product_img1}"></div>
+                                    <p></p>
+                                </hgroup>
+                                <div class = "text-center"><input id = "product_btn{$j.product_id}" class = "btn btn-info btn2" type = "submit" name = "btn1" value = "詳細內容" onclick="javascript:location.href='index_message.php?product_id={$j.product_id}'")></div>
+                            </div>
+                        {/if}
+                        {/foreach}
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    123456
+</body>
+</html>
