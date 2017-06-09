@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-hant">
+    <meta charset = "UTF-8"/>
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<title>{$title}</title>
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+    <style type = "text/css">
+        body{
+            margin: 0;
+            padding: 0;
+            padding-top:30px;
+            font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;
+        }
+        .title1{
+            margin: 40px auto;
+            text-align: center;
+            font-size: 50px;
+            color : black;
+            border: 1px double solid;
+        }
+        .border1{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            background-color: azure;
+        }
+        .border2{
+            margin:30px auto;
+            padding:30px;
+            text-align: left;
+            background-color: azure;
+        }
+        .title2{
+            margin:0px auto;
+            padding:10px;
+            text-align:left;
+            font-size:40px;
+        }
+        .title3{
+            margin:0px auto;
+            padding:10px;
+            text-align:center;
+            font-size:40px;
+        }
+
+        .btn1{
+            font-size:25px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .btn2{
+            font-size:8px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .textarea1{
+            font-size:24px;
+            width : 50%;
+            height : 150px;
+            vertical-align:middle;
+        }
+
+
+        .nav-title{
+            font-size: 30px;
+            font-weight: bold;
+            color:sienna;
+        }
+        .nav-li{
+            font-size: 16px;
+        }
+        .current1{
+            display:none;
+        }
+        .input-border{
+            border:0;
+            background-color:azure;
+        }
+        .input-border2{
+            border:0;
+            background-color:azure;
+        }
+    </style>
+    <script type = "text/javascript" src = "js/jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src = "js/bootstrap.js"></script>
+    <script type = "text/javascript">
+	$(document).ready(function(){
+	    $("#btn_update").click(function(){
+	        if(confirm("確認要修改嗎")){
+	            if($("#password").val() != "" && $("#user").val() != "" && (($("#password1").val() != $("#password").val()) || ($("#user1").val() != $("#user").val()))){
+                    $.ajax({
+                        url : "message_update.php",
+                        type : "post",
+                        data : {
+                            user_id : $("#user_id").val(),
+                            user : $("#user").val(),
+                            account : $("#account").val(),
+                            password : $("#password").val()
+                        },
+                        success : function(data) {
+                            alert ("修改成功");
+                            location.reload();
+                        }
+                    });
+                }else {
+                    alert ("請輸入正確修改資料");
+                }
+            }
+        });
+
+    });
+
+    function logout(){
+        $(document).ready(function() {
+            if(confirm("確定要登出嗎")){
+                $.ajax({
+                    url : "logout.php",
+                    success :function(){
+                        alert("登出成功");
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
+
+    function btn_delete(message_id){
+        $message_id = message_id;
+        $(document).ready(function(){
+            if(confirm("確定要刪除此筆留言嗎")){
+                $.ajax({
+                    url : "message_delete.php",
+                    type :"POST",
+                    data :{
+                        message_id : $message_id
+                    },
+                    success : function(data){
+                        alert ("刪除成功");
+                        location.reload();
+                    }
+                });
+            }
+        });
+
+    }
+    </script>
+</head>
+
+<body>
+    <nav class = "navbar navbar-default navbar-fixed-top">
+        <div class = "container">
+            <div class = "navbar-header">
+                <div class = "navbar-brand"><p class = "nav-title">商品後台管理</p></div>
+            </div>
+            <ul class = "nav navbar-nav navbar-right">
+                <li class = "nav-li"><a href="backend.php">基本資料</a></li>
+                <li class = "nav-li"><a href="backend_productinfo.php">商品資訊</a></li>
+                <li class = "nav-li"><a href="javascript:void(0);" onclick =logout()>登出</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class = "container-fluid">
+        <div class = "row">
+            <div class = "container">
+                <div class = "row">
+                    <div class = "title1">{$product_array[0]['product_name']} 商品資訊</div>
+                </div>
+                <div class = "row border1">
+                    <div class = "col-xs-6">
+                        <div class = "title2">店家名稱：{$user}</div>
+                         {foreach from = $product_array key = number item = j}
+                         <div class = "title2">商品名稱：{$j.product_name}</div>
+                         <div class = "title2">商品介紹：{$j.product_content}</div>
+                        {/foreach}
+                    </div>
+                    <div class = "col-xs-6">
+                        <div class = "title3">商品圖片
+                            {foreach from = $product_array key = number item = j}
+                            {if $product_array[$number]['product_img1'] neq ''}
+                            <div><img src = "{$j.product_img1}">
+                                {if $product_array[$number]['product_img2'] neq ''}
+                                <img src = "{$j.product_img2}" style = "margin:20px;">
+                                {/if}
+                            </div>
+                            {/if}
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    {if isset($message_array)}
+                    <div class = "title1">留言內容</div>
+                    <table class = "table border2">
+                        <tr>
+                            <th>留言人</th>
+                            <th>留言內容</th>
+                            <th>留言時間</th>
+                            <th>刪除留言</th>
+                        </tr>
+                    {foreach from = $message_array key = num item = i}
+                        <tr>
+                            <td>{$i.name}</td>
+                            <td>{$i.message}</td>
+                            <td>{$i.date}</td>
+                            <td><input id = "btn_delete{$i.message_id}" class = "btn btn-success btn2" type = "submit" value = "刪除" onclick="btn_delete('{$i.message_id}')"></td>
+                        </tr>
+                    {/foreach}
+                    </table>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

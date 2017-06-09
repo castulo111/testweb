@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-hant">
+    <meta charset = "UTF-8"/>
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<title>{$title}</title>
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+    <style type = "text/css">
+        body{
+            margin: 0;
+            padding: 0;
+            padding-top:30px;
+            font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;
+        }
+        .title1{
+            margin: 40px auto;
+            text-align: center;
+            font-size: 50px;
+            color : black;
+            border: 1px double solid;
+        }
+        .border1{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            background-color: azure;
+        }
+        .border2{
+            margin:30px auto;
+            padding:30px;
+            text-align: center;
+            background-color: azure;
+        }
+        .title2{
+            margin:0px auto;
+            padding:10px;
+            text-align:center;
+            font-size:40px;
+        }
+        .title3{
+            margin:0px auto;
+            padding:10px;
+            text-align:left;
+            font-size:24px;
+        }
+
+        .btn1{
+            font-size:25px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .btn2{
+            font-size:8px;
+            background-color: greenyellow;
+            border: 2px olivedrab solid;
+            border-radius: 10px;
+        }
+        .textarea1{
+            font-size:24px;
+            width : 50%;
+            height : 150px;
+            vertical-align:middle;
+        }
+
+
+        .nav-title{
+            font-size: 30px;
+            font-weight: bold;
+            color:sienna;
+        }
+        .nav-li{
+            font-size: 16px;
+        }
+        .current1{
+            display:none;
+        }
+        .input-border{
+            border:0;
+            background-color:azure;
+        }
+        .input-border2{
+            border:0;
+            background-color:azure;
+        }
+    </style>
+    <script type = "text/javascript" src = "js/jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src = "js/bootstrap.js"></script>
+    <script type = "text/javascript">
+	$(document).ready(function(){
+	    $("#btn_update").click(function(){
+	        if(confirm("確認要修改嗎")){
+	            if($("#password").val() != "" && $("#user").val() != "" && (($("#password1").val() != $("#password").val()) || ($("#user1").val() != $("#user").val()))){
+                    $.ajax({
+                        url : "message_update.php",
+                        type : "post",
+                        data : {
+                            user_id : $("#user_id").val(),
+                            user : $("#user").val(),
+                            account : $("#account").val(),
+                            password : $("#password").val()
+                        },
+                        success : function(data) {
+                            alert ("修改成功");
+                            location.reload();
+                        }
+                    });
+                }else {
+                    alert ("請輸入正確修改資料");
+                }
+            }
+        });
+        $("#btn_return").click(function(){
+            location.reload();
+        });
+
+    });
+
+    function logout(){
+        $(document).ready(function() {
+            if(confirm("確定要登出嗎")){
+                $.ajax({
+                    url : "logout.php",
+                    success :function(){
+                        alert("登出成功");
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
+    function update(){
+        $(document).ready(function() {
+            $(".row1").addClass("current1");
+            $(".row3").removeClass("current1");
+        });
+    }
+    </script>
+</head>
+
+<body>
+    <nav class = "navbar navbar-default navbar-fixed-top">
+        <div class = "container">
+            <div class = "navbar-header">
+                <div class = "navbar-brand"><p class = "nav-title">商品後台管理</p></div>
+            </div>
+            <ul class = "nav navbar-nav navbar-right">
+                <li class = "nav-li"><a href="backend.php">基本資料</a></li>
+                <li class = "nav-li"><a href="backend_productinfo.php">商品資訊</a></li>
+                <li class = "nav-li"><a href="javascript:void(0);" onclick =logout()>登出</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class = "container-fluid">
+        <div class = "row">
+            <div class = "container">
+                <div class = "row row1">
+                    <div class = "title1">商家基本資料</div>
+                    <div class = "border1 ">
+                        <div class = "title3">商家名稱：{$user}</div>
+                        <div class = "title3">商家帳號：{$account}</div>
+                        <div class = "title3">商家密碼：<input class = "input-border" type = "password" name = "password" value = "{$password}" readonly="readonly"></div>
+                    </div>
+                    <div class = "text-center"><input  class = "btn btn-info btn1" type = "submit" value = "修改資料" onclick = update()></div>
+                </div>
+                <div class = "row row3 current1">
+                    <div class = "title1">基本資料修改</div>
+                    <div class = "border1 ">
+                        <input type = "hidden" id = "user_id" name = "id" value = "{$id}">
+                        <input type = "hidden" id = "user1" name = "id" value = "{$user}">
+                        <input type = "hidden" id = "password1" name = "id" value = "{$password}">
+                        <div class = "title3">商家名稱：<input id = "user" class = "input-border" type = "user" name = "user" value = "{$user}"></div>
+                        <div class = "title3">商家帳號：<input id = "account" class = "input-border" type = "account" name = "account" value = "{$account}" readonly="readonly"></div>
+                        <div class = "title3">商家密碼：<input id = "password" class = "input-border" type = "password" name = "password" value = "{$password}"></div>
+                    </div>
+                    <div class = "text-center">
+                        <input id = "btn_update" class = "btn btn-info btn1" type = "submit" value = "確認修改">
+                        <input id = "btn_return" class = "btn btn-info btn1" type = "submit" value = "取消修改">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
